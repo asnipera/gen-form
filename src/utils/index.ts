@@ -1,6 +1,7 @@
 import { Selection } from 'vscode';
 import * as vscode from 'vscode';
 import { getTagTemplate } from '../antDesignVue';
+import { wrapForm, wrapFormItem } from '../antDesignVue/components/form';
 
 const formFlag = '````';
 
@@ -33,11 +34,11 @@ function genForm(componentTag: string[]) {
   componentTag.forEach((tag) => {
     const template = getTagTemplate(tag.trim());
     if (template) {
-      formStr.push(template);
+      formStr.push(wrapFormItem(template));
     }
   });
 
-  return formStr.join('');
+  return wrapForm(formStr.join(''));
 }
 
 function replace(
