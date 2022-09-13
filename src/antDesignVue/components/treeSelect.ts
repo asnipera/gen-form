@@ -1,7 +1,7 @@
 export const key = ['treeSelect', 'tree', '树', '树选择'];
 export const value = `
 <a-tree-select
-    v-model:value="value"
+    v-model:value="modalValue"
     show-search
     placeholder="Please select"
     allow-clear
