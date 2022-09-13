@@ -21,7 +21,7 @@ gen form <em> ⚡️</em>
 `ctrl+d`
 ## 右键菜单
 
-`ctrl+d`
+`生成表单`
 
 <p>
 <img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/genForm.gif?raw=true">
