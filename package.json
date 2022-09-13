@@ -3,7 +3,7 @@
   "displayName": "gen-form",
   "description": "gen form quickly",
   "author": "yanli",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -78,5 +78,9 @@
   "repository": "https://github.com/asnipera/gen-form",
   "LICENSE": "MIT",
   "publisher": "liyan-sz",
-  "icon": "sniper.png"
+  "icon": "src/assets/sniper.png",
+  "vsce": {
+    "dependencies": false,
+    "useYarn": false
+  }
 }
