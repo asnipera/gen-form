@@ -14,3 +14,7 @@ gen form <em> ⚡️</em>
 - ⚡️ 一键生成form表单
 - 🚀 通过快捷键和右键菜单执行
 - 📚 支持ant-design-vue
+
+<p align="center">
+<img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/genForm.gif">
+</p>
