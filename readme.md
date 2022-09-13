@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/asnipera/gen-form/blob/main/logo.png?raw=true" />
+<img src="https://github.com/asnipera/gen-form/blob/main/sniper.png?raw=true" />
 </p>
 <h1 align="center">
 gen form <em> ⚡️</em>
