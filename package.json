@@ -1,0 +1,82 @@
+{
+  "name": "gen-form",
+  "displayName": "gen-form",
+  "description": "gen form quickly",
+  "author": "yanli",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.71.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:gen.form"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gen.form",
+        "title": "生成表单",
+        "category": "Gen Form",
+        "when": "editorFocus"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "gen.form",
+        "key": "ctrl+d"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceLangId == vue",
+          "command": "gen.form",
+          "group": "navigation@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "form",
+      "properties": {
+        "form.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start Vite server with VS Code"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.71.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vscode/test-electron": "^2.1.5",
+    "esbuild": "^0.15.7",
+    "eslint": "^8.20.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.7.4"
+  },
+  "repository": "https://github.com/asnipera/gen-form",
+  "LICENSE": "MIT",
+  "publisher": "liyan-sz",
+  "icon": "sniper.png"
+}
