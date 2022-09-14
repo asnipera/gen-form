@@ -1,4 +1,4 @@
-import { Selection, Range, TextEditor, window, EndOfLine } from "vscode";
+import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
 import { antComponentTemplates } from "../antDesignVue";
 import {
   wrapCol,
@@ -6,7 +6,7 @@ import {
   wrapFormItem,
   wrapRow as wrapRowComponent,
 } from "../antDesignVue/components/form";
-import { CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
+import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 import { Componet } from "./template";
 
 function getEnterStr(): string {
@@ -49,6 +49,7 @@ function genSectionRange(content: string) {
 
 type FormState = Record<string, any>;
 
+// 生成form
 function genForm(tags: string[]) {
   const formList: string[] = [];
   const formState: FormState = {};
@@ -65,6 +66,7 @@ function genForm(tags: string[]) {
   return [formStr, scriptStr];
 }
 
+// 生成form相关的script字符串
 function genScriptStr(formState: FormState, script: string) {
   let scriptStr = [FORM_STATE.replace(/object/, JSON.stringify(formState))];
   scriptStr.push(ENTER);
@@ -75,6 +77,7 @@ function genScriptStr(formState: FormState, script: string) {
   return scriptStr.join("");
 }
 
+// 收集多列标签对应的template和script
 function pushMutipleColToFormAndScript(tag: string, index: string, formState: FormState, formList: string[]) {
   let extraStr = "";
   const tags = getInlineTags(tag);
@@ -98,6 +101,7 @@ function pushMutipleColToFormAndScript(tag: string, index: string, formState: Fo
   return extraStr;
 }
 
+// 收集单列标签对应的template和script
 function pushSingleColToFormAndScript(tag: string, index: string, formState: FormState, formList: string[]) {
   const component = getTagTemplate(tag);
   if (component) {
@@ -109,6 +113,7 @@ function pushSingleColToFormAndScript(tag: string, index: string, formState: For
   return "";
 }
 
+// 通过replace替换当前文件的内容
 function replace(selection: Selection | Range, formStr: string, scriptRange: Range, scriptStr: string, editor: TextEditor) {
   editor.edit((editBuilder) => {
     editBuilder.replace(selection, formStr);
@@ -116,6 +121,7 @@ function replace(selection: Selection | Range, formStr: string, scriptRange: Ran
   });
 }
 
+// 通过起始标记调用
 export function replaceEditorByFormFlag(text: string, editor: TextEditor) {
   const [start, end, selection] = genSectionRange(text);
   if (start === undefined || end === undefined) {
@@ -125,11 +131,13 @@ export function replaceEditorByFormFlag(text: string, editor: TextEditor) {
   render(text, selection, tagNames, editor);
 }
 
+// 鼠标选中时调用
 export function replaceEditorBySelection(text: string, selection: Selection, editor: TextEditor) {
   const tagNames = parseTagNames(text);
   render(text, selection, tagNames, editor);
 }
 
+// 渲染form相关的template和script
 function render(text: string, selection: Range | Selection, tagNames: string[], editor: TextEditor) {
   const [formStr, scriptStr] = genForm(tagNames);
   const scriptRange = genEndScriptRange(text);
@@ -140,6 +148,7 @@ function render(text: string, selection: Range | Selection, tagNames: string[], 
   }
 }
 
+// 获取</script>标签的range对象
 export function genEndScriptRange(text: string) {
   const textList = text.split(ENTER);
   let start = -1,
@@ -158,16 +167,30 @@ export function genEndScriptRange(text: string) {
   return new Range(start, startCharacter, start, startCharacter + END_SCRIPT_TAG.length);
 }
 
+// 获取配置文件中设置的UI
+function getConfigurationUI() {
+  const config = workspace.getConfiguration();
+  const ui = config.get("platform.UI");
+  return ui === ANT_DESIGN_VUE ? antComponentTemplates : antComponentTemplates;
+}
+
+// 根据tag获取key
+function getKeyByTag(templates: Map<string[], Componet>, tag: string) {
+  return Array.from(templates.keys()).find((key) => key.includes(tag.trim()));
+}
+
+// 获取标签对应的模板
 export function getTagTemplate(tag: string) {
   let value: Componet | undefined;
-  Array.from(antComponentTemplates.keys()).forEach((key) => {
-    if (key.includes(tag.trim())) {
-      value = antComponentTemplates.get(key)!;
-    }
-  });
+  const templates = getConfigurationUI();
+  const key = getKeyByTag(templates, tag);
+  if (key) {
+    value = templates.get(key);
+  }
   return value;
 }
 
+// 获取行内标签
 export function getInlineTags(inlineTag: string) {
   const tags = inlineTag.split("|");
   return tags.map((tag) => tag.trim());
