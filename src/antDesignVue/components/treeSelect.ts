@@ -1,19 +1,32 @@
-export const key = ['treeSelect', 'tree', '树', '树选择'];
-export const value = `
-<a-tree-select
-    v-model:value="modalValue"
-    show-search
-    placeholder="Please select"
-    allow-clear
-    tree-default-expand-all
-    :tree-data="treeData"
-  >
-    <template #title="{ value: val, title }">
-      <b v-if="val === 'parent 1-1'" style="color: #08c">sss</b>
-      <template v-else>{{ title }}</template>
-    </template>
-  </a-tree-select>
-`;
+import { Componet } from "..";
+
+export const key = ["treeSelect", "tree", "树", "树选择"];
+export const value: Componet = function (index: string) {
+  const model = `modalValue${index}`;
+  return {
+    template: `
+    <a-tree-select
+        v-model:value="formState.${model}"
+        show-search
+        placeholder="Please select"
+        allow-clear
+        tree-default-expand-all
+        :tree-data="treeData"
+      >
+        <template #title="{ value, title }">
+          {{title}}-{{value}}
+        </template>
+      </a-tree-select>
+    `,
+    script: `
+      const ${model} = ref('');
+      const treeData = ref([]);
+      `,
+    key: model,
+    value: "",
+    extra: "const treeData = ref([]);",
+  };
+};
 
 export const treeSelect = {
   key,

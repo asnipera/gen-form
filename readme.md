@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/asnipera/gen-form/blob/main/src/assets/sniper.png?raw=true" />
+<img src="https://github.com/asnipera/gen-form/blob/main/sniper.png?raw=true" />
 </p>
 <h1 align="center">
 gen form <em> ⚡️</em>
@@ -26,3 +26,56 @@ gen form <em> ⚡️</em>
 <p>
 <img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/genForm.gif?raw=true">
 </p>
+
+## 使用方式
+### 在模板中输入组件对应的中英文标签
+
+1. 通过右键菜单生成表单
+```js
+<template>
+    // 英文标签
+    input
+    select
+</template>
+```
+```js
+<template>
+    // 中文标签
+    级联
+    下拉
+</template>
+```
+2. 通过快捷键（`ctrl+alt+z`）生成表单
+```js
+<template>
+// 通过快捷键生成表单时，需要通过````来标记表单的始末位置
+    ````
+        tree
+        datePicker
+    ````
+</template>
+```
+3. 一行多列
+```js
+<template>
+    // 行内组件通过|隔开（一行两列）
+    ````
+        input|radio
+        datePicker | 多选框
+    `````
+</template>
+```
+# 标签
+|  标签   | 英文  | 中文  |
+|  ----  | ----  |----  |
+| autoComplete  | autoComplete, complete, auto, | 自动完成, 自动 |
+| cascader  | cascader |级联, 级联选择 |
+| checkbox  | checkbox |多选框, 多选, 复选 |
+| datePicker  | datePicker, date |日期, 日期选择框 |
+| input  | input |输入框 |
+| inputNumber  | inputNumber | 数字, 数字输入框 |
+| radio  | radio |单选框, 单选 |
+| select  | select |下拉, 选择器 |
+| timerPicker  | timerPicker, timer |时间选择框, 时间 |
+| treeSelect  | treeSelect, tree |树, 树选择 |
+| upload  | upload | 上传 |

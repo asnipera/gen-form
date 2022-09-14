@@ -1,9 +1,9 @@
 {
-  "name": "gen-form",
-  "displayName": "gen-form",
-  "description": "gen form quickly",
+  "name": "lazy-form",
+  "displayName": "lazy-form",
+  "description": "一键生成表单",
   "author": "yanli",
-  "version": "0.0.5",
+  "version": "0.0.1",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -11,40 +11,48 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:gen.form"
+    "onCommand:lazyForm"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "gen.form",
+        "command": "lazyForm",
         "title": "生成表单",
-        "category": "Gen Form",
+        "category": "lazyForm",
         "when": "editorFocus"
       }
     ],
     "keybindings": [
       {
-        "command": "gen.form",
-        "key": "ctrl+d"
+        "command": "lazyForm",
+        "key": "ctrl+alt+p"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "when": "resourceLangId == vue",
-          "command": "gen.form",
+          "command": "lazyForm",
           "group": "navigation@1"
         }
       ]
     },
     "configuration": {
-      "title": "form",
+      "title": "platform",
       "properties": {
-        "form.autoStart": {
-          "type": "boolean",
-          "default": true,
-          "description": "Start Vite server with VS Code"
+        "platform.UI": {
+          "type": "string",
+          "default": "ant design vue",
+          "enum": [
+            "ant design vue",
+            "view design (waitting)"
+          ],
+          "description": "Start Vite server with VS Code",
+          "enumDescriptions": [
+            "generate ant design vue form",
+            "generate view design form (waitting)"
+          ]
         }
       }
     }
@@ -78,7 +86,7 @@
   "repository": "https://github.com/asnipera/gen-form",
   "LICENSE": "MIT",
   "publisher": "liyan-sz",
-  "icon": "src/assets/sniper.png",
+  "icon": "sniper.png",
   "vsce": {
     "dependencies": false,
     "useYarn": false

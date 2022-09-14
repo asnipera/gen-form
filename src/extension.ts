@@ -11,7 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('Congratulations, your extension "gen.form " is now active!');
 
   const subscriptions = vscode.commands.registerCommand(
-    'gen.form',
+    'lazyForm',
     genFormCommand
   );
   context.subscriptions.push(subscriptions);
