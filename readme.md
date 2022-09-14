@@ -2,14 +2,14 @@
 <img src="https://github.com/asnipera/gen-form/blob/main/sniper.png?raw=true" />
 </p>
 <h1 align="center">
-gen form <em> ⚡️</em>
+Layz Form <em> ⚡️</em>
 </h1>
 <p align="center">
-一键 <em><b>快速</b></em> 生成表单
+ <em><b>一键</b></em> 生成表单
 </o>
 <p align="center">
-<a href="https://marketplace.visualstudio.com/items?itemName=liyan-sz.gen-form" target="__blank">
-<img src="https://img.shields.io/visual-studio-marketplace/v/liyan-sz.gen-form.svg?color=228cb3&amp;label=" alt="Visual Studio Marketplace Version" /></a>
+<a href="https://marketplace.visualstudio.com/items?itemName=liyan-sz.lazy-form" target="__blank">
+<img src="https://img.shields.io/visual-studio-marketplace/v/liyan-sz.lazy-form.svg?color=228cb3&amp;label=" alt="Visual Studio Marketplace Version" /></a>
 </p>
 
 - ⚡️ 一键生成form表单
@@ -18,7 +18,7 @@ gen form <em> ⚡️</em>
 
 ## 快捷键
 
-`ctrl+d`
+`ctrl+alt+p`
 ## 右键菜单
 
 `生成表单`
