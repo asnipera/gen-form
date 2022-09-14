@@ -3,7 +3,7 @@
   "displayName": "lazy-form",
   "description": "一键生成表单",
   "author": "yanli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -86,7 +86,7 @@
   "repository": "https://github.com/asnipera/gen-form",
   "LICENSE": "MIT",
   "publisher": "liyan-sz",
-  "icon": "sniper.png",
+  "icon": "src/assets/sniper.png",
   "vsce": {
     "dependencies": false,
     "useYarn": false
