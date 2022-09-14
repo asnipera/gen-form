@@ -1,7 +1,6 @@
-import { Componet } from "..";
+import { Componet } from "../../utils/template";
 
 export const key = ["autoComplete ", "complete", "auto", "自动完成", "自动"];
-
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {

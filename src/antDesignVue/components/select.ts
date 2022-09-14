@@ -1,4 +1,4 @@
-import { Componet } from "..";
+import { Componet } from "../../utils/template";
 
 export const key = ["select", "下拉", "选择器"];
 export const value: Componet = function (index: string) {

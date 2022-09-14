@@ -1,4 +1,4 @@
-import { Componet } from "..";
+import { Componet } from "../../utils/template";
 
 export const key = ["cascader", "级联", "级联选择"];
 export const value: Componet = function (index: string) {

@@ -1,4 +1,4 @@
-import { Componet } from "..";
+import { Componet } from "../../utils/template";
 
 export const key = ["timerPicker", "timer", "时间选择框", "时间"];
 

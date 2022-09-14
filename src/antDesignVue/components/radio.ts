@@ -1,4 +1,4 @@
-import { Componet } from "..";
+import { Componet } from "../../utils/template";
 
 export const key = ["radio", "单选框", "单选"];
 export const value: Componet = function (index: string) {

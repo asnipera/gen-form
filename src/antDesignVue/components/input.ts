@@ -1,4 +1,4 @@
-import { Componet } from "..";
+import { Componet } from "../../utils/template";
 
 export const key = ["input", "输入框"];
 export const value: Componet = function (index: string) {

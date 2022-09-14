@@ -1,6 +1,5 @@
 import { Selection, Range, TextEditor, window, EndOfLine } from "vscode";
-import * as vscode from "vscode";
-import { getInlineTagTemplate as getInlineTags, getTagTemplate } from "../antDesignVue";
+import { antComponentTemplates } from "../antDesignVue";
 import {
   wrapCol,
   wrapForm as wrapFormComponent,
@@ -8,6 +7,7 @@ import {
   wrapRow as wrapRowComponent,
 } from "../antDesignVue/components/form";
 import { CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
+import { Componet } from "./template";
 
 function getEnterStr(): string {
   const editor = window.activeTextEditor;
@@ -156,4 +156,19 @@ export function genEndScriptRange(text: string) {
     return null;
   }
   return new Range(start, startCharacter, start, startCharacter + END_SCRIPT_TAG.length);
+}
+
+export function getTagTemplate(tag: string) {
+  let value: Componet | undefined;
+  Array.from(antComponentTemplates.keys()).forEach((key) => {
+    if (key.includes(tag.trim())) {
+      value = antComponentTemplates.get(key)!;
+    }
+  });
+  return value;
+}
+
+export function getInlineTags(inlineTag: string) {
+  const tags = inlineTag.split("|");
+  return tags.map((tag) => tag.trim());
 }

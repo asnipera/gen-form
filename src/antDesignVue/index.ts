@@ -1,3 +1,4 @@
+import { Componet, genRegisterComponentCurry } from "../utils/template";
 import { autoComplete } from "./components/autoComplete";
 import { cascader } from "./components/cascader";
 import { checkbox } from "./components/Checkbox";
@@ -10,23 +11,8 @@ import { timerPicker } from "./components/timerPicker";
 import { treeSelect } from "./components/treeSelect";
 import { upload } from "./components/upload";
 
-export type Componet = (index: string) => {
-  template: string;
-  script: string;
-  key: string;
-  value: any;
-  extra?: string;
-};
-const templateMap = new Map<string[], Componet>();
-function registerComponents({
-  key,
-  value,
-}: {
-  key: string[];
-  value: Componet;
-}) {
-  templateMap.set(key, value);
-}
+const antComponentTemplates = new Map<string[], Componet>();
+const registerComponents = genRegisterComponentCurry(antComponentTemplates);
 
 registerComponents(input);
 registerComponents(select);
@@ -40,19 +26,4 @@ registerComponents(timerPicker);
 registerComponents(treeSelect);
 registerComponents(upload);
 
-export function getTagTemplate(tag: string) {
-  let value: Componet | undefined;
-  Array.from(templateMap.keys()).forEach((key) => {
-    if (key.includes(tag.trim())) {
-      value = templateMap.get(key)!;
-    }
-  });
-  return value;
-}
-
-export function getInlineTagTemplate(inlineTag: string) {
-  const tags = inlineTag.split("|");
-  return tags.map((tag) => tag.trim());
-}
-
-export { templateMap };
+export { antComponentTemplates };
