@@ -7,14 +7,15 @@ Layz Form <em> ⚡️</em>
 <p align="center">
  <em><b>一键</b></em> 生成表单
 </o>
-<p align="center">
+
+<center>
 <a href="https://marketplace.visualstudio.com/items?itemName=liyan-sz.lazy-form" target="__blank">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/liyan-sz.lazy-form.svg?color=228cb3&amp;label=" alt="Visual Studio Marketplace Version" />
+
+![VSCode Marketplace](https://img.shields.io/vscode-marketplace/v/liyan-sz.lazy-form.svg??style=flat-square&label=vscode%20marketplace)
+
 </a>
+</center>
 
-![VSCode Marketplace](https://img.shields.io/vscode-marketplace/v/liyan-sz.lazy-form.svg?style=flat-square&label=vscode%20marketplace)
-
-</p>
 
 - ⚡️ 一键生成form表单
 - 🚀 快捷键和右键菜单
