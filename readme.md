@@ -52,7 +52,7 @@ Lazy Form <em> ⚡️</em>
 <img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/contextMenu.gif?raw=true">
 </p>
 
-2. 通过快捷键（`ctrl+alt+z`）生成表单
+2. 通过快捷键（`ctrl+alt+p`）生成表单
 ```js
 <template>
     // 通过快捷键生成表单时，必须在始末位置添加````标记
