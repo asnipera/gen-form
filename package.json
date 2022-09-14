@@ -3,7 +3,7 @@
   "displayName": "lazy-form",
   "description": "一键生成表单",
   "author": "yanli",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -43,12 +43,12 @@
       "properties": {
         "platform.UI": {
           "type": "string",
-          "default": "ant design vue",
+          "default": "Ant Design Vue",
           "enum": [
-            "ant design vue",
-            "view design (waitting)"
+            "Ant Design Vue",
+            "View Design (waitting)"
           ],
-          "description": "Start Vite server with VS Code",
+          "description": "Generate a form with one click",
           "enumDescriptions": [
             "generate ant design vue form",
             "generate view design form (waitting)"

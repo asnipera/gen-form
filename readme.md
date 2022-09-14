@@ -23,9 +23,7 @@ gen form <em> ⚡️</em>
 
 `生成表单`
 
-<p>
-<img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/genForm.gif?raw=true">
-</p>
+
 
 ## 使用方式
 ### 在模板中输入组件对应的中英文标签
@@ -40,21 +38,32 @@ gen form <em> ⚡️</em>
 ```
 ```js
 <template>
-    // 中文标签
-    级联
-    下拉
+    // 中英文标签
+    input
+    单选
+    多选
 </template>
 ```
+<p>
+<img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/contextMenu.gif?raw=true">
+</p>
+
 2. 通过快捷键（`ctrl+alt+z`）生成表单
 ```js
 <template>
-// 通过快捷键生成表单时，需要通过````来标记表单的始末位置
+    // 通过快捷键生成表单时，必须在始末位置添加````标记
     ````
-        tree
-        datePicker
+    input
+    单选
+    多选
     ````
 </template>
 ```
+
+<p>
+<img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/shortcut.gif?raw=true">
+</p>
+
 3. 一行多列
 ```js
 <template>
@@ -65,6 +74,11 @@ gen form <em> ⚡️</em>
     `````
 </template>
 ```
+
+<p>
+<img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/mutipleCol.gif?raw=true">
+</p>
+
 # 标签
 |  标签   | 英文  | 中文  |
 |  ----  | ----  |----  |
