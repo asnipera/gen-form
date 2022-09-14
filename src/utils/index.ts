@@ -7,7 +7,7 @@ import {
   wrapRow as wrapRowComponent,
 } from "../antDesignVue/components/form";
 import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
-import { Componet } from "./template";
+import { Componet } from "./register";
 
 function getEnterStr(): string {
   const editor = window.activeTextEditor;

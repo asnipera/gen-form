@@ -1,4 +1,4 @@
-import { Componet } from "../../utils/template";
+import { Componet } from "../../utils/register";
 
 export const key = ["datePicker", "date", "日期", "日期选择框"];
 export const value: Componet = function (index: string) {

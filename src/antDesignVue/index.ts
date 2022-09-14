@@ -1,4 +1,4 @@
-import { Componet, genRegisterComponentCurry } from "../utils/template";
+import { Componet, genRegisterComponentCurry } from "../utils/register";
 import { autoComplete } from "./components/autoComplete";
 import { cascader } from "./components/cascader";
 import { checkbox } from "./components/Checkbox";
