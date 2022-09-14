@@ -2,7 +2,7 @@
 <img src="https://github.com/asnipera/gen-form/blob/main/src/assets/sniper.png?raw=true" />
 </p>
 <h1 align="center">
-Layz Form <em> ⚡️</em>
+Lazy Form <em> ⚡️</em>
 </h1>
 <p align="center">
  <em><b>一键</b></em> 生成表单
@@ -18,6 +18,7 @@ Layz Form <em> ⚡️</em>
 - ⚡️ 一键生成form表单
 - 🚀 快捷键和右键菜单
 - 📚 支持ant-design-vue
+- 📚 view design (waitting)
 
 ## 快捷键
 
