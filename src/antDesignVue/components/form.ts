@@ -37,8 +37,8 @@ export function wrapFormItem(template: string, name: string) {
   return formItem(template, name);
 }
 
-export function wrapForm(template: string) {
-  return form.replace(slot, template);
+export function wrapForm(template: string[]) {
+  return form.replace(slot, template.join(""));
 }
 
 export function wrapCol(span: number, formItem: string) {

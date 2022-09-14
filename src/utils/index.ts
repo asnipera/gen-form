@@ -1,125 +1,115 @@
-import { Selection, Range, TextEditor } from 'vscode';
-import * as vscode from 'vscode';
-import {
-  Componet,
-  getInlineTagTemplate,
-  getTagTemplate,
-} from '../antDesignVue';
+import { Selection, Range, TextEditor, window, EndOfLine } from "vscode";
+import * as vscode from "vscode";
+import { getInlineTagTemplate as getInlineTags, getTagTemplate } from "../antDesignVue";
 import {
   wrapCol,
-  wrapForm,
+  wrapForm as wrapFormComponent,
   wrapFormItem,
-  wrapRow,
-} from '../antDesignVue/components/form';
+  wrapRow as wrapRowComponent,
+} from "../antDesignVue/components/form";
+import { CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 
-const formFlag = '````';
-function genRange(content: string) {
-  const lines = content.split(getEnterStr());
-  const start = lines.findIndex((line) => line.includes(formFlag));
+function getEnterStr(): string {
+  const editor = window.activeTextEditor;
+  if (!editor) {
+    return "";
+  }
+  const document = editor!.document;
+  return document.eol === EndOfLine.LF ? "\n" : "\r\n";
+}
+
+const ENTER = getEnterStr();
+
+function parseTagNames(context: string) {
+  return context.split(ENTER);
+}
+
+function warning(info: string) {
+  window.showWarningMessage(info);
+}
+
+function genSectionRange(content: string) {
+  const lines = content.split(ENTER);
+  const start = lines.findIndex((line) => line.includes(FORM_FLAG));
   if (start === -1) {
-    vscode.window.showWarningMessage(`请在表单的开始位置添加:${formFlag}`);
+    warning(`请在表单的开始位置添加:${FORM_FLAG}`);
     return [];
   }
-  const startCharacter = lines[start].indexOf(formFlag);
+  const startCharacter = lines[start].indexOf(FORM_FLAG);
   // @ts-ignore
-  const end = lines.findLastIndex((line) => line.includes(formFlag));
+  const end = lines.findLastIndex((line) => line.includes(FORM_FLAG));
   if (end === -1) {
-    vscode.window.showWarningMessage('请在表单的结束位置添加:${formFlag}');
+    warning(`请在表单的结束位置添加:${FORM_FLAG}`);
     return [];
   }
-  const endCharacter = lines[end].indexOf(formFlag) + formFlag.length;
-
-  const range = new vscode.Range(start, startCharacter, end, endCharacter);
+  const endCharacter = lines[end].indexOf(FORM_FLAG) + FORM_FLAG.length;
+  const range = new Range(start, startCharacter, end, endCharacter);
   return [start, end, range];
 }
 
-// 换行
-function getEnterStr(): string {
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    return '';
-  }
-  const document = editor!.document;
-  return document.eol === vscode.EndOfLine.LF ? '\n' : '\r\n';
-}
-function genTagNames(context: string) {
-  return context.split(getEnterStr());
-}
-const inlineSplit = '|';
 type FormState = Record<string, any>;
+
 function genForm(tags: string[]) {
   const formList: string[] = [];
   const formState: FormState = {};
-  let extraStr = '';
+  let extraStr = "";
   tags.forEach((tag, rowIndex) => {
-    const pIndex = (rowIndex + 1).toString();
-    const isInlineTag = tag.includes(inlineSplit);
-    if (isInlineTag) {
-      const tags = getInlineTagTemplate(tag);
-      const span = 24 / tags.length;
-      const cols: string[] = [];
-      tags.forEach((tag, colIndex) => {
-        const component = getTagTemplate(tag);
-        if (component) {
-          const { template, key, value, extra } = component(
-            `${pIndex}_${colIndex + 1}`
-          );
-          const item = wrapFormItem(template, key);
-          const col = wrapCol(span, item);
-          cols.push(col);
-          formState[key] = value;
-          if (extra) {
-            extraStr += extra;
-          }
-        }
-      });
-      const row = wrapRow(cols.join(''));
-      formList.push(row);
-    } else {
-      const value = getTagTemplate(tag);
-      if (value) {
-        const extra = pushItemToFormAndScript(
-          formList,
-          formState,
-          value,
-          pIndex
-        );
-        if (extra) {
-          extraStr += extra;
-        }
-      }
-    }
+    const index = (rowIndex + 1).toString();
+    const isMutipleCol = tag.includes(INLINE_SPLIT);
+    extraStr += isMutipleCol
+      ? pushMutipleColToFormAndScript(tag, index, formState, formList)
+      : pushSingleColToFormAndScript(tag, index, formState, formList);
   });
-  const formStr = wrapForm(formList.join(''));
-  let scriptStr =
-    'const formState = reactive(' + JSON.stringify(formState) + ');';
-  scriptStr += getEnterStr();
-  scriptStr += 'const rules = {};';
-  scriptStr += extraStr;
-  scriptStr += getEnterStr();
-  scriptStr += endScriptTag;
+  const formStr = wrapFormComponent(formList);
+  const scriptStr = genScriptStr(formState, extraStr);
   return [formStr, scriptStr];
 }
 
-function pushItemToFormAndScript(
-  formList: string[],
-  formState: FormState,
-  component: Componet,
-  index: string
-) {
-  const { template, key, value, extra } = component(index);
-  formList.push(wrapFormItem(template, key));
-  formState[key] = value;
-  return extra;
+function genScriptStr(formState: FormState, script: string) {
+  let scriptStr = [FORM_STATE.replace(/object/, JSON.stringify(formState))];
+  scriptStr.push(ENTER);
+  scriptStr.push(RULES);
+  scriptStr.push(script);
+  scriptStr.push(ENTER);
+  scriptStr.push(END_SCRIPT_TAG);
+  return scriptStr.join("");
 }
 
-function replace(
-  selection: Selection | Range,
-  formStr: string,
-  scriptRange: Range,
-  scriptStr: string,
-  editor: TextEditor
-) {
+function pushMutipleColToFormAndScript(tag: string, index: string, formState: FormState, formList: string[]) {
+  let extraStr = "";
+  const tags = getInlineTags(tag);
+  const span = 24 / tags.length;
+  const cols: string[] = [];
+  tags.forEach((tag, colIndex) => {
+    const component = getTagTemplate(tag);
+    if (component) {
+      const { template, key, value, extra } = component(`${index}_${colIndex + 1}`);
+      const item = wrapFormItem(template, key);
+      const col = wrapCol(span, item);
+      cols.push(col);
+      formState[key] = value;
+      if (extra) {
+        extraStr += extra;
+      }
+    }
+  });
+  const row = wrapRowComponent(cols.join(""));
+  formList.push(row);
+  return extraStr;
+}
+
+function pushSingleColToFormAndScript(tag: string, index: string, formState: FormState, formList: string[]) {
+  const component = getTagTemplate(tag);
+  if (component) {
+    const { template, key, value, extra } = component(index);
+    formList.push(wrapFormItem(template, key));
+    formState[key] = value;
+    return extra ?? "";
+  }
+  return "";
+}
+
+function replace(selection: Selection | Range, formStr: string, scriptRange: Range, scriptStr: string, editor: TextEditor) {
   editor.edit((editBuilder) => {
     editBuilder.replace(selection, formStr);
     editBuilder.replace(scriptRange, scriptStr);
@@ -127,54 +117,43 @@ function replace(
 }
 
 export function replaceEditorByFormFlag(text: string, editor: TextEditor) {
-  const [start, end, selection] = genRange(text);
+  const [start, end, selection] = genSectionRange(text);
   if (start === undefined || end === undefined) {
-    return '';
+    return "";
   }
-  const tagNames = genTagNames(text).slice(start + 1, end);
+  const tagNames = parseTagNames(text).slice(start + 1, end);
   render(text, selection, tagNames, editor);
 }
 
-export function replaceEditorBySelection(
-  text: string,
-  selection: Selection,
-  editor: TextEditor
-) {
-  const tagNames = genTagNames(text);
+export function replaceEditorBySelection(text: string, selection: Selection, editor: TextEditor) {
+  const tagNames = parseTagNames(text);
   render(text, selection, tagNames, editor);
 }
 
-function render(
-  text: string,
-  selection: Range | Selection,
-  tagNames: string[],
-  editor: TextEditor
-) {
+function render(text: string, selection: Range | Selection, tagNames: string[], editor: TextEditor) {
   const [formStr, scriptStr] = genForm(tagNames);
   const scriptRange = genEndScriptRange(text);
-  replace(selection, formStr, scriptRange, scriptStr, editor);
-  return scriptStr;
+  if (!scriptRange) {
+    warning("未找到section：script ");
+  } else {
+    replace(selection, formStr, scriptRange, scriptStr, editor);
+  }
 }
 
-const closeScriptTagReg = /<\/script>(?!"|')/;
-const endScriptTag = '</script>';
 export function genEndScriptRange(text: string) {
-  const textList = text.split(getEnterStr());
+  const textList = text.split(ENTER);
   let start = -1,
     startCharacter = -1;
   textList.forEach((line, i) => {
-    const result = line.match(closeScriptTagReg);
+    const result = line.match(CLOSE_SCRIPT_REG);
     if (result && result.index !== undefined) {
       start = i;
       startCharacter = result.index;
     }
   });
-  const range = new vscode.Range(
-    start,
-    startCharacter,
-    start,
-    startCharacter + endScriptTag.length
-  );
 
-  return range;
+  if (start === -1) {
+    return null;
+  }
+  return new Range(start, startCharacter, start, startCharacter + END_SCRIPT_TAG.length);
 }
