@@ -3,7 +3,7 @@
   "displayName": "lazy-form",
   "description": "一键生成表单",
   "author": "yanli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "engines": {
     "vscode": "^1.71.0"
   },
