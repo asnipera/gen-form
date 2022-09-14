@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/asnipera/gen-form/blob/main/sniper.png?raw=true" />
+<img src="https://github.com/asnipera/gen-form/blob/main/src/assets/sniper.png?raw=true" />
 </p>
 <h1 align="center">
 Layz Form <em> ⚡️</em>
@@ -7,15 +7,13 @@ Layz Form <em> ⚡️</em>
 <p align="center">
  <em><b>一键</b></em> 生成表单
 </o>
-
 <center>
 <a href="https://marketplace.visualstudio.com/items?itemName=liyan-sz.lazy-form" target="__blank">
 
-![VSCode Marketplace](https://img.shields.io/vscode-marketplace/v/liyan-sz.lazy-form.svg??style=flat-square&label=vscode%20marketplace)
+![VSCode Marketplace](https://img.shields.io/vscode-marketplace/v/liyan-sz.lazy-form.svg?style=flat-square&label=vscode%20marketplace)
 
 </a>
 </center>
-
 
 - ⚡️ 一键生成form表单
 - 🚀 快捷键和右键菜单
