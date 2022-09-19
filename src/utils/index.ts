@@ -6,7 +6,8 @@ import {
   wrapFormItem,
   wrapRow as wrapRowComponent,
 } from "../antDesignVue/components/form";
-import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
+import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES, VIEW_DESIGN } from "../constant";
+import { iviewComponentTemplates } from "../viewDesign";
 import { Componet } from "./register";
 
 function getEnterStr(): string {
@@ -171,7 +172,14 @@ export function genEndScriptRange(text: string) {
 function getConfigurationUI() {
   const config = workspace.getConfiguration();
   const ui = config.get("platform.UI");
-  return ui === ANT_DESIGN_VUE ? antComponentTemplates : antComponentTemplates;
+  switch (ui) {
+    case ANT_DESIGN_VUE:
+      return antComponentTemplates;
+    case VIEW_DESIGN:
+      return iviewComponentTemplates;
+    default:
+      return antComponentTemplates;
+  }
 }
 
 // 根据tag获取key

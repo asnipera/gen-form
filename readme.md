@@ -18,7 +18,7 @@ Lazy Form <em> ⚡️</em>
 - ⚡️ 一键生成form表单
 - 🚀 快捷键和右键菜单
 - 📚 支持ant-design-vue
-- 📚 view design (waitting)
+- 📚 view design
 
 ## 快捷键
 
