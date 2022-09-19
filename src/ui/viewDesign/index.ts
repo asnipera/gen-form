@@ -1,4 +1,4 @@
-import { Componet, genRegisterComponentCurry } from "../utils/register";
+import { Componet, genRegisterComponentCurry } from "../../utils/register";
 import { autoComplete } from "./components/autoComplete";
 import { cascader } from "./components/cascader";
 import { checkbox } from "./components/Checkbox";
@@ -11,8 +11,8 @@ import { timerPicker } from "./components/timerPicker";
 import { treeSelect } from "./components/treeSelect";
 import { upload } from "./components/upload";
 
-const antComponentTemplates = new Map<string[], Componet>();
-const registerComponents = genRegisterComponentCurry(antComponentTemplates);
+const viewDesignComponentTemplates = new Map<string[], Componet>();
+const registerComponents = genRegisterComponentCurry(viewDesignComponentTemplates);
 
 registerComponents(input);
 registerComponents(select);
@@ -26,4 +26,4 @@ registerComponents(timerPicker);
 registerComponents(treeSelect);
 registerComponents(upload);
 
-export { antComponentTemplates };
+export { viewDesignComponentTemplates };

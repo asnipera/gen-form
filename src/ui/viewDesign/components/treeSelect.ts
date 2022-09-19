@@ -1,22 +1,11 @@
-import { Componet } from "../../utils/register";
+import { Componet } from "../../../utils/register";
 
 export const key = ["treeSelect", "tree", "树", "树选择"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `
-    <a-tree-select
-        v-model:value="formState.${model}"
-        show-search
-        placeholder="Please select"
-        allow-clear
-        tree-default-expand-all
-        :tree-data="treeData"
-      >
-        <template #title="{ value, title }">
-          {{title}}-{{value}}
-        </template>
-      </a-tree-select>
+    <to-do />
     `,
     script: `
       const ${model} = ref('');

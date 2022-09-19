@@ -1,4 +1,4 @@
-import { Componet } from "../../utils/register";
+import { Componet } from "../../../utils/register";
 
 export const key = ["upload", "上传"];
 export const value: Componet = function (index: string) {

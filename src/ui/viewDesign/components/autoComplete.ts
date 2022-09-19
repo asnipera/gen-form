@@ -1,10 +1,10 @@
-import { Componet } from "../../utils/register";
+import { Componet } from "../../../utils/register";
 
 export const key = ["autoComplete ", "complete", "auto", "自动完成", "自动"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
-    template: `<a-auto-complete v-model:value="formState.${model}" placeholder="" />`,
+    template: `<AutoComplete v-model="formState.${model}" placeholder="" />`,
     script: `const ${model} = ref('');`,
     key: model,
     value: "",

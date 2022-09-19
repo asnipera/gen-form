@@ -1,13 +1,7 @@
 import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
-import { antComponentTemplates } from "../antDesignVue";
-import {
-  wrapCol,
-  wrapForm as wrapFormComponent,
-  wrapFormItem,
-  wrapRow as wrapRowComponent,
-} from "../antDesignVue/components/form";
-import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
+import { CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 import { Componet } from "./register";
+import { getTemplates, wrapCol, wrapForm, wrapFormItem, wrapRow } from "../ui";
 
 function getEnterStr(): string {
   const editor = window.activeTextEditor;
@@ -61,7 +55,7 @@ function genForm(tags: string[]) {
       ? pushMutipleColToFormAndScript(tag, index, formState, formList)
       : pushSingleColToFormAndScript(tag, index, formState, formList);
   });
-  const formStr = wrapFormComponent(formList);
+  const formStr = wrapForm()(formList);
   const scriptStr = genScriptStr(formState, extraStr);
   return [formStr, scriptStr];
 }
@@ -87,8 +81,8 @@ function pushMutipleColToFormAndScript(tag: string, index: string, formState: Fo
     const component = getTagTemplate(tag);
     if (component) {
       const { template, key, value, extra } = component(`${index}_${colIndex + 1}`);
-      const item = wrapFormItem(template, key);
-      const col = wrapCol(span, item);
+      const item = wrapFormItem()(template, key);
+      const col = wrapCol()(span, item);
       cols.push(col);
       formState[key] = value;
       if (extra) {
@@ -96,7 +90,7 @@ function pushMutipleColToFormAndScript(tag: string, index: string, formState: Fo
       }
     }
   });
-  const row = wrapRowComponent(cols.join(""));
+  const row = wrapRow()(cols.join(""));
   formList.push(row);
   return extraStr;
 }
@@ -106,7 +100,7 @@ function pushSingleColToFormAndScript(tag: string, index: string, formState: For
   const component = getTagTemplate(tag);
   if (component) {
     const { template, key, value, extra } = component(index);
-    formList.push(wrapFormItem(template, key));
+    formList.push(wrapFormItem()(template, key));
     formState[key] = value;
     return extra ?? "";
   }
@@ -170,8 +164,7 @@ export function genEndScriptRange(text: string) {
 // 获取配置文件中设置的UI
 function getConfigurationUI() {
   const config = workspace.getConfiguration();
-  const ui = config.get("platform.UI");
-  return ui === ANT_DESIGN_VUE ? antComponentTemplates : antComponentTemplates;
+  return config.get("platform.UI");
 }
 
 // 根据tag获取key
@@ -182,7 +175,7 @@ function getKeyByTag(templates: Map<string[], Componet>, tag: string) {
 // 获取标签对应的模板
 export function getTagTemplate(tag: string) {
   let value: Componet | undefined;
-  const templates = getConfigurationUI();
+  const templates = getTemplates();
   const key = getKeyByTag(templates, tag);
   if (key) {
     value = templates.get(key);

@@ -33,18 +33,18 @@ const row = `
   </a-row>
   `;
 
-export function wrapFormItem(template: string, name: string) {
+export function wrapAntFormItem(template: string, name: string) {
   return formItem(template, name);
 }
 
-export function wrapForm(template: string[]) {
+export function wrapAntForm(template: string[]) {
   return form.replace(slot, template.join(""));
 }
 
-export function wrapCol(span: number, formItem: string) {
-  return col(span, formItem);
+export function wrapAntRow(col: string) {
+  return row.replace(slot, col);
 }
 
-export function wrapRow(col: string) {
-  return row.replace(slot, col);
+export function wrapAntCol(span: number, formItem: string) {
+  return col(span, formItem);
 }
