@@ -86,5 +86,8 @@
   "repository": "https://github.com/asnipera/gen-form",
   "LICENSE": "MIT",
   "publisher": "liyan-sz",
-  "icon": "src/assets/sniper.png"
+  "icon": "src/assets/sniper.png",
+  "dependencies": {
+    "gogocode": "^1.0.55"
+  }
 }
