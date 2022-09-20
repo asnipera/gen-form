@@ -1,7 +1,7 @@
-import { Componet } from "../../utils/register";
+import { Component } from "../../utils/register";
 
 export const key = ["radio", "单选框", "单选"];
-export const value: Componet = function (index: string) {
+export const value: Component = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<a-radio-group v-model:value="formState.${model}" name="radioGroup">

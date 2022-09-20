@@ -1,4 +1,4 @@
-export type Componet = (index: string) => {
+export type Component = (index: string) => {
   template: string;
   script: string;
   key: string;
@@ -6,8 +6,8 @@ export type Componet = (index: string) => {
   extra?: string;
 };
 
-export function genRegisterComponentCurry(map: Map<string[], Componet>) {
-  return function ({ key, value }: { key: string[]; value: Componet }) {
+export function genRegisterComponentCurry(map: Map<string[], Component>) {
+  return function ({ key, value }: { key: string[]; value: Component }) {
     map.set(key, value);
   };
 }

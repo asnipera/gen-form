@@ -1,8 +1,8 @@
-import { Componet } from "../../utils/register";
+import { Component } from "../../utils/register";
 
 export const key = ["inputNumber", "数字", "数字输入框"];
 
-export const value: Componet = function (index: string) {
+export const value: Component = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<a-input-number v-model:value="formState.${model}" />`,

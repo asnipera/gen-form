@@ -1,7 +1,7 @@
-import { Componet } from "../../utils/register";
+import { Component } from "../../utils/register";
 
 export const key = ["cascader", "级联", "级联选择"];
-export const value: Componet = function (index: string) {
+export const value: Component = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<a-cascader v-model:value="formState.${model}" :options="options" placeholder="" />`,

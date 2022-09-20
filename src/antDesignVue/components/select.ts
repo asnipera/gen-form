@@ -1,7 +1,7 @@
-import { Componet } from "../../utils/register";
+import { Component } from "../../utils/register";
 
 export const key = ["select", "下拉", "选择器"];
-export const value: Componet = function (index: string) {
+export const value: Component = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `

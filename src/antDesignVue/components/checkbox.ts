@@ -1,7 +1,7 @@
-import { Componet } from "../../utils/register";
+import { Component } from "../../utils/register";
 
 export const key = ["checkbox", "多选框", "多选", "复选"];
-export const value: Componet = function (index: string) {
+export const value: Component = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<a-checkbox v-model:checked="formState.${model}">Checkbox</a-checkbox>`,

@@ -8,7 +8,7 @@ import {
 } from "../commonUI/form";
 import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES, VIEW_DESIGN } from "../constant";
 import { iviewComponentTemplates } from "../viewDesign";
-import { Componet } from "./register";
+import { Component } from "./register";
 
 export type UIType = typeof ANT_DESIGN_VUE | typeof VIEW_DESIGN
 
@@ -184,13 +184,13 @@ function getUITemplate() {
 }
 
 // 根据tag获取key
-function getKeyByTag(templates: Map<string[], Componet>, tag: string) {
+function getKeyByTag(templates: Map<string[], Component>, tag: string) {
   return Array.from(templates.keys()).find((key) => key.includes(tag.trim()));
 }
 
 // 获取标签对应的模板
 export function getTagTemplate(tag: string) {
-  let value: Componet | undefined;
+  let value: Component | undefined;
   const templates = getUITemplate();
   const key = getKeyByTag(templates, tag);
   if (key) {
