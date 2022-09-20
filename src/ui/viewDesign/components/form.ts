@@ -1,3 +1,5 @@
+import { genMutipleLineTmpl, removeLastIndexEnter } from "../../../utils/utils";
+
 export const slot = `<slot />`;
 
 function formItem(slot: string, name: string) {
@@ -35,17 +37,17 @@ const row = `
   `;
 
 export function wrapViewDesignFormItem(template: string, name: string) {
-  return formItem(template, name);
+  return removeLastIndexEnter(formItem(template, name));
 }
 
 export function wrapViewDesignForm(template: string[]) {
-  return form.replace(slot, template.join(""));
+  return removeLastIndexEnter(form.replace(slot, genMutipleLineTmpl(template)));
 }
 
 export function wrapViewDesignRow(col: string) {
-  return row.replace(slot, col);
+  return removeLastIndexEnter(row.replace(slot, col));
 }
 
 export function wrapViewDesignCol(span: number, formItem: string) {
-  return col(span, formItem);
+  return removeLastIndexEnter(col(span, formItem));
 }

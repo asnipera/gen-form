@@ -1,6 +1,6 @@
 import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
 import { INLINE_SPLIT } from "../constant";
-import { getTemplates, wrapCol, wrapForm, wrapFormItem, wrapRow } from "../ui";
+import { getComponentTemplates, wrapCol, wrapFormContainer, wrapFormItem, wrapRow } from "../ui";
 import { envProxy } from "./proxy";
 import { Componet, ComponetMap } from "./register";
 
@@ -16,7 +16,7 @@ function isSingleTag(tagStr: string) {
   return !tagStr.includes(INLINE_SPLIT);
 }
 
-function genSigleTagTmpl(templates: ComponetMap, tagName: string) {
+function getSigleTagTmpl(templates: ComponetMap, tagName: string) {
   let value: Componet | undefined;
   templates.forEach((tmpl, key) => {
     if (!value && key.includes(tagName)) {
@@ -29,7 +29,7 @@ function genSigleTagTmpl(templates: ComponetMap, tagName: string) {
 function genMutipleTagTmpl(templates: ComponetMap, tagStr: string) {
   const tags = parseTagStr(tagStr, INLINE_SPLIT);
   return tags.map((tag) => {
-    return genSigleTagTmpl(templates, tag);
+    return getSigleTagTmpl(templates, tag);
   });
 }
 
@@ -41,7 +41,7 @@ function getTagTemplate(tagInstance: Componet | undefined, index: string) {
   return "";
 }
 
-function genFormItem(tmpl: string, index: string) {
+function wrapFormItemContainer(tmpl: string, index: string) {
   const formItem = wrapFormItem();
   return formItem(tmpl, index);
 }
@@ -50,33 +50,33 @@ function isString(value: any): value is string {
   return typeof value === "string";
 }
 
-function genRowItem(colItems: (string | string[] | undefined)[]) {
+function wrapRowContainer(colItems: (string | string[] | undefined)[]) {
+  const wrapRowFun = wrapRow();
   return colItems.map((colItem) => {
     if (colItem === undefined) {
       return [];
     }
-    const wrapRowFun = wrapRow();
-    if (isString(colItem)) {
-      return wrapRowFun(colItem);
+    let colItemStr = colItem;
+    if (Array.isArray(colItemStr)) {
+      colItemStr = colItemStr.reduce((total, cur) => total + cur);
     }
-    const colItems = colItem.map((item) => wrapRowFun(item));
-    return colItems;
+    return wrapRowFun(colItemStr);
   });
 }
 
 function genColItemWithOneTag(tagInstance: Componet | undefined, index: string, span = 24) {
   const tagTemplate = getTagTemplate(tagInstance, index);
-  const formItem = genFormItem(tagTemplate, index);
-  const wrapColFun = wrapCol();
-  return wrapColFun(span, formItem);
+  const formItem = wrapFormItemContainer(tagTemplate, index);
+  const wrapColContainer = wrapCol();
+  return wrapColContainer(span, formItem);
 }
 
 export function genFormStr(tagStr: string) {
   const tags = parseTagStr(tagStr, envProxy.enterFlag);
-  const templates = getTemplates();
+  const templates = getComponentTemplates();
   const tagList = tags.map((tag, i) => {
     if (isSingleTag(tag)) {
-      const tagInstance = genSigleTagTmpl(templates, tag);
+      const tagInstance = getSigleTagTmpl(templates, tag);
       return genColItemWithOneTag(tagInstance, (i + 1).toString());
     } else {
       const tagInstances = genMutipleTagTmpl(templates, tag);
@@ -87,7 +87,7 @@ export function genFormStr(tagStr: string) {
     }
   });
 
-  const rowList = genRowItem(tagList);
-  const wrapFormFun = wrapForm();
-  return wrapFormFun(rowList.flat().filter((tag) => tag) as string[]);
+  const rowItems = wrapRowContainer(tagList);
+  const formContainer = wrapFormContainer();
+  return formContainer(rowItems.flat().filter((tag) => tag) as string[]);
 }

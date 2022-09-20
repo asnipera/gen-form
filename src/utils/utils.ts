@@ -17,7 +17,7 @@ export function removeLastIndexEnter(str: string) {
 
 export function genMutipleLineTmpl(tmpl: string[]) {
   const enter = getEnterStr();
-  return removeLastIndexEnter(tmpl.join(enter));
+  return removeLastIndexEnter(tmpl.join(""));
 }
 
 // 获取配置文件中设置的UI
@@ -33,6 +33,9 @@ export function transform(source: string) {
   const formAst = template.find(selectorConfigration);
   // @ts-ignore
   const formStr = formAst[0].match.$$$$[0].content.value.content;
-  template.replace(selectorConfigration, genFormStr(formStr));
+  const newCode = genFormStr(formStr);
+  console.log(newCode);
+
+  template.replace(selectorConfigration, newCode);
   return ast.generate();
 }

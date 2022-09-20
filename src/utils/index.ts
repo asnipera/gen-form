@@ -1,7 +1,7 @@
 import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
 import { CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 import { Componet } from "./register";
-import { getTemplates, wrapCol, wrapForm, wrapFormItem, wrapRow } from "../ui";
+import { getComponentTemplates, wrapCol, wrapFormContainer, wrapFormItem, wrapRow } from "../ui";
 
 function getEnterStr(): string {
   const editor = window.activeTextEditor;
@@ -55,7 +55,7 @@ function genForm(tags: string[]) {
       ? pushMutipleColToFormAndScript(tag, index, formState, formList)
       : pushSingleColToFormAndScript(tag, index, formState, formList);
   });
-  const formStr = wrapForm()(formList);
+  const formStr = wrapFormContainer()(formList);
   const scriptStr = genScriptStr(formState, extraStr);
   return [formStr, scriptStr];
 }
@@ -175,7 +175,7 @@ function getKeyByTag(templates: Map<string[], Componet>, tag: string) {
 // 获取标签对应的模板
 export function getTagTemplate(tag: string) {
   let value: Componet | undefined;
-  const templates = getTemplates();
+  const templates = getComponentTemplates();
   const key = getKeyByTag(templates, tag);
   if (key) {
     value = templates.get(key);

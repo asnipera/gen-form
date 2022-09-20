@@ -17,13 +17,13 @@ function isAnt(ui: string | undefined) {
   return true;
 }
 
-export function getTemplates() {
+export function getComponentTemplates() {
   const ui = getConfigurationUI();
   const templates = isAnt(ui) ? antComponentTemplates : viewDesignComponentTemplates;
   return templates;
 }
 
-export function wrapForm() {
+export function wrapFormContainer() {
   const ui = getConfigurationUI();
   return isAnt(ui) ? wrapAntForm : wrapViewDesignForm;
 }
