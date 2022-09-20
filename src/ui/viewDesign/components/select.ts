@@ -4,11 +4,11 @@ export const key = ["select", "下拉", "选择器"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
-    template: `
-    <Select  v-model="formState.${model}" placeholder="">
-    Option  value="">option</Option >
-    </Select>
-  `,
+    template: [
+      `<a-select v-model:value="formState.${model}" placeholder="">`,
+      '<a-select-option value="">option</a-select-option>',
+      "</a-select>",
+    ].join(""),
     script: `const modalValue${index} = ref('');`,
     key: model,
     value: "",
