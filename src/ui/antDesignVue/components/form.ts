@@ -1,8 +1,10 @@
+import { genMutipleLineTmpl, removeLastIndexEnter } from "../../../utils/utils";
+
 export const slot = `<slot />`;
 
 function formItem(slot: string, name: string) {
   return `
-  <a-form-item has-feedback label="" name="${name}">
+  <a-form-item has-feedback label="" name="modalValue${name}">
       ${slot}
   </a-form-item>
   `;
@@ -31,20 +33,20 @@ const row = `
   <a-row :gutter="24">
       ${slot}
   </a-row>
-  `;
+`;
 
 export function wrapAntFormItem(template: string, name: string) {
-  return formItem(template, name);
+  return removeLastIndexEnter(formItem(template, name));
 }
 
 export function wrapAntForm(template: string[]) {
-  return form.replace(slot, template.join(""));
+  return removeLastIndexEnter(form.replace(slot, genMutipleLineTmpl(template)));
 }
 
 export function wrapAntRow(col: string) {
-  return row.replace(slot, col);
+  return removeLastIndexEnter(row.replace(slot, col));
 }
 
 export function wrapAntCol(span: number, formItem: string) {
-  return col(span, formItem);
+  return removeLastIndexEnter(col(span, formItem));
 }

@@ -5,7 +5,7 @@ function formItem(slot: string, name: string) {
   <FormItem label="${name}">
       ${slot}
   </FormItem >
-  `;
+`;
 }
 
 export const form = `

@@ -53,6 +53,12 @@
             "generate ant design vue form",
             "generate view design form (waitting)"
           ]
+        },
+        "platform.Selector": {
+          "type": "string",
+          "default": "<div id='f'>$$$</div>",
+          "description": "form Selector",
+          "scope": "resource"
         }
       }
     }
