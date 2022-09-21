@@ -49,12 +49,7 @@ function isEmptyNode(node: $.GoGoAST) {
   return !node[0];
 }
 
-function replaceScript(ast: $.GoGoAST, source: string, script: string) {
-  const scriptAst = getScriptAst(ast, source);
-  if (isEmptyNode(scriptAst)) {
-    window.showWarningMessage("The script block is empty, please check the code");
-    return;
-  }
+function replaceScript(scriptAst: $.GoGoAST, source: string, script: string) {
   if (isVue3(source)) {
     scriptAst.append("program.body", script);
   } else {
@@ -120,8 +115,13 @@ export function transform(source: string) {
   const formAst = templateAst.find(selectorConfigration);
   const customForm = getCustomFormContent(formAst);
   const [template, script] = buildForm(customForm, source);
+  const scriptAst = getScriptAst(ast, source);
+  if (isEmptyNode(scriptAst)) {
+    window.showWarningMessage("script标签没有子节点，无法插入js代码");
+    return false;
+  }
   replaceTemplate(templateAst, selectorConfigration, template);
-  replaceScript(ast, source, script);
+  replaceScript(scriptAst, source, script);
   sortSourceBlocks(ast, source);
 
   return ast.generate();

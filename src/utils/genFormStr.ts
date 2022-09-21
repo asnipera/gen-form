@@ -66,18 +66,24 @@ function genColItemWithOneTag(tagInstance: Componet | undefined, index: string, 
   return wrapColContainer(span, formItem);
 }
 
-function pushToFormState(formState: Record<string, any>, tagInstance: Componet | undefined, index: string) {
+function pushToFormState(formState: Record<string, any>, tagInstance: Componet | undefined, index: string, source: string) {
   if (!tagInstance) {
     return;
   }
-  const { key, value, extra } = tagInstance(index);
+  const { key, value, v2Datas, v3Datas } = tagInstance(index);
   formState[key] = value;
-  return extra;
+  if (isVue3(source)) {
+    return v3Datas ? v3Datas?.join("") : "";
+  }
+  if (v2Datas) {
+    return JSON.stringify(v2Datas);
+  }
+  return "";
 }
 
 function genFormScript(formState: Record<string, any>, extraFormConstants: string[], source: string) {
-  const formStateStr = JSON.stringify(formState);
   if (isVue3(source)) {
+    const formStateStr = JSON.stringify(formState);
     let scriptStr = [FORM_STATE.replace(/object/, formStateStr)];
     scriptStr.push(envProxy.enterFlag);
     scriptStr.push(RULES);
@@ -86,7 +92,11 @@ function genFormScript(formState: Record<string, any>, extraFormConstants: strin
     return scriptStr.join("");
   }
   // vue2
-  return JSON.stringify({ formState, rules: {} });
+  const extraData = extraFormConstants.reduce((total, cur) => {
+    return Object.assign(total, JSON.parse(cur));
+  }, {});
+  const state = Object.assign({}, formState, extraData);
+  return JSON.stringify({ formState: state, rules: {} });
 }
 
 export function buildForm(tagStr: string, source: string) {
@@ -98,7 +108,7 @@ export function buildForm(tagStr: string, source: string) {
     const index = (i + 1).toString();
     if (isSingleTag(tag)) {
       const tagInstance = getSigleTagTmpl(templates, tag);
-      const extra = pushToFormState(formState, tagInstance, index);
+      const extra = pushToFormState(formState, tagInstance, index, source);
       extra && extraFormConstants.push(extra);
       return genColItemWithOneTag(tagInstance, index);
     } else {
@@ -107,7 +117,7 @@ export function buildForm(tagStr: string, source: string) {
         const span = Math.floor(24 / tagInstances.length);
         return tagInstances.map((tagInstance, j) => {
           const i = `${index}_${j + 1}`;
-          const extra = pushToFormState(formState, tagInstance, i);
+          const extra = pushToFormState(formState, tagInstance, i, source);
           extra && extraFormConstants.push(extra);
           return genColItemWithOneTag(tagInstance, i, span);
         });

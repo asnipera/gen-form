@@ -9,10 +9,11 @@ export function buildFormCommand() {
   const document = editor.document;
   const text = document.getText();
   const sfc = transform(text);
-
-  editor.edit((editBuilder) => {
-    const { lineCount } = document;
-    editBuilder.replace(new Range(0, 0, lineCount, 0), sfc);
-    window.showInformationMessage(`成功生成表单！`);
-  });
+  if (sfc) {
+    editor.edit((editBuilder) => {
+      const { lineCount } = document;
+      editBuilder.replace(new Range(0, 0, lineCount, 0), sfc);
+      window.showInformationMessage(`成功生成表单！`);
+    });
+  }
 }

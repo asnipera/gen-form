@@ -4,8 +4,7 @@ export const value: Componet = function (index: string) {
   const treeData = `treeData${index}`;
   return {
     template: [
-      `
-    <a-tree-select
+      `<a-tree-select
         v-model:value="formState.${model}"
         show-search
         placeholder="Please select"
@@ -21,7 +20,10 @@ export const value: Componet = function (index: string) {
     ].join(""),
     key: model,
     value: "",
-    extra: `const ${treeData} = ref([]);`,
+    v3Datas: [`const ${treeData} = ref([]);`],
+    v2Datas: {
+      [treeData]: [],
+    },
   };
 };
 
