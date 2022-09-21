@@ -6,7 +6,7 @@ import {
   wrapFormItem,
   wrapRow as wrapRowComponent,
 } from "../commonUI/form";
-import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES, VIEW_DESIGN } from "../constant";
+import { ANT_DESIGN_VUE, CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES, VIEW_DESIGN, VUE2_DATA_REG, VUE2_DATA_RETURN_REG, VUE2_DATA_RETURN_TAG, VUE2_FORM_STATE, VUE2_RULES } from "../constant";
 import { iviewComponentTemplates } from "../viewDesign";
 import { Component } from "./register";
 
@@ -65,11 +65,12 @@ function genForm(tags: string[]) {
       : pushSingleColToFormAndScript(tag, index, formState, formList);
   });
   const formStr = wrapFormComponent(getConfigurationUI(), formList);
-  const scriptStr = genScriptStr(formState, extraStr);
+  const ui = getConfigurationUI()
+  const scriptStr = ui === VIEW_DESIGN ? genVue2ScriptStr(formState, extraStr) : genScriptStr(formState, extraStr);
   return [formStr, scriptStr];
 }
 
-// 生成form相关的script字符串
+// 生成form相关的script字符串 (vue3版本)
 function genScriptStr(formState: FormState, script: string) {
   let scriptStr = [FORM_STATE.replace(/object/, JSON.stringify(formState))];
   scriptStr.push(ENTER);
@@ -77,6 +78,18 @@ function genScriptStr(formState: FormState, script: string) {
   scriptStr.push(script);
   scriptStr.push(ENTER);
   scriptStr.push(END_SCRIPT_TAG);
+  return scriptStr.join("");
+}
+
+// 生成form相关的script字符串 (vue2版本)
+function genVue2ScriptStr(formState: FormState, script: string) {
+  let scriptStr = [VUE2_DATA_RETURN_TAG];
+  scriptStr.push(ENTER);
+  scriptStr.push(VUE2_FORM_STATE.replace(/object/, JSON.stringify(formState)));
+  scriptStr.push(ENTER);
+  scriptStr.push(VUE2_RULES);
+  scriptStr.push(ENTER);
+  scriptStr.push(script);
   return scriptStr.join("");
 }
 
@@ -143,9 +156,10 @@ export function replaceEditorBySelection(text: string, selection: Selection, edi
 // 渲染form相关的template和script
 function render(text: string, selection: Range | Selection, tagNames: string[], editor: TextEditor) {
   const [formStr, scriptStr] = genForm(tagNames);
-  const scriptRange = genEndScriptRange(text);
+  const ui = getConfigurationUI()
+  const scriptRange = ui === VIEW_DESIGN ? genDataReturnRange(text) : genEndScriptRange(text);
   if (!scriptRange) {
-    warning("未找到section：script ");
+    warning(ui === VIEW_DESIGN ? "未找到section：data return" : "未找到section：script");
   } else {
     replace(selection, formStr, scriptRange, scriptStr, editor);
   }
@@ -168,6 +182,22 @@ export function genEndScriptRange(text: string) {
     return null;
   }
   return new Range(start, startCharacter, start, startCharacter + END_SCRIPT_TAG.length);
+}
+
+// 获取vue data return的range对象 (正则匹配规则有待完善)
+export function genDataReturnRange(text: string) {
+  const textList = text.split(ENTER);
+  let start = -1;
+  textList.forEach((line, i, lines) => {
+    if (start !== -1) return
+    const result = line.match(VUE2_DATA_RETURN_REG) && lines[i - 1].match(VUE2_DATA_REG);
+    result && (start = i)
+  });
+
+  if (start === -1) {
+    return null;
+  }
+  return new Range(start, 0, start, textList[start].length);
 }
 
 // 获取配置文件中设置的UI
