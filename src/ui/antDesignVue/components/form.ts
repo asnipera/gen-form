@@ -18,8 +18,7 @@ export const form = `
     :rules="rules"
   >
   ${slot}
-</a-form>
-`;
+</a-form>`; //尾部不能有换行，否则gogocode.replace会报错
 
 const col = function (span: number, formItem: string) {
   return `
@@ -36,17 +35,17 @@ const row = `
 `;
 
 export function wrapAntFormItem(template: string, name: string) {
-  return removeLastIndexEnter(formItem(template, name));
+  return formItem(template, name);
 }
 
 export function wrapAntForm(template: string[]) {
-  return removeLastIndexEnter(form.replace(slot, genMutipleLineTmpl(template)));
+  return form.replace(slot, genMutipleLineTmpl(template));
 }
 
 export function wrapAntRow(col: string) {
-  return removeLastIndexEnter(row.replace(slot, col));
+  return row.replace(slot, col);
 }
 
 export function wrapAntCol(span: number, formItem: string) {
-  return removeLastIndexEnter(col(span, formItem));
+  return col(span, formItem);
 }

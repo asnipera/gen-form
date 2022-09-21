@@ -1,8 +1,9 @@
 import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
-import { INLINE_SPLIT } from "../constant";
+import { END_SCRIPT_TAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 import { getComponentTemplates, wrapCol, wrapFormContainer, wrapFormItem, wrapRow } from "../ui";
 import { envProxy } from "./proxy";
 import { Componet, ComponetMap } from "./register";
+import { isVue3 } from "./utils";
 
 // 拆分每行的标签
 export function parseTagStr(tagStr: string, separator: string) {
@@ -71,23 +72,53 @@ function genColItemWithOneTag(tagInstance: Componet | undefined, index: string, 
   return wrapColContainer(span, formItem);
 }
 
-export function genFormStr(tagStr: string) {
+function pushToFormState(formState: Record<string, any>, tagInstance: Componet | undefined, index: string) {
+  if (!tagInstance) {
+    return;
+  }
+  const { key, value } = tagInstance(index);
+  formState[key] = value;
+  return formState;
+}
+
+function genFormScript(formState: Record<string, any>, source: string) {
+  if (!isVue3(source)) {
+    return JSON.stringify(formState);
+  }
+  let scriptStr = [FORM_STATE.replace(/object/, JSON.stringify(formState))];
+  scriptStr.push(envProxy.enterFlag);
+  scriptStr.push(RULES);
+  scriptStr.push(envProxy.enterFlag);
+  scriptStr.push(END_SCRIPT_TAG);
+  return scriptStr.join("");
+}
+
+export function genFormStr(tagStr: string, source: string) {
   const tags = parseTagStr(tagStr, envProxy.enterFlag);
   const templates = getComponentTemplates();
+  const formState = {};
   const tagList = tags.map((tag, i) => {
+    const index = (i + 1).toString();
     if (isSingleTag(tag)) {
       const tagInstance = getSigleTagTmpl(templates, tag);
-      return genColItemWithOneTag(tagInstance, (i + 1).toString());
+      pushToFormState(formState, tagInstance, index);
+      return genColItemWithOneTag(tagInstance, index);
     } else {
       const tagInstances = genMutipleTagTmpl(templates, tag);
       if (tagInstances) {
         const span = Math.floor(24 / tagInstances.length);
-        return tagInstances.map((tagInstance, j) => genColItemWithOneTag(tagInstance, `${i + 1}_${j + 1}`, span));
+        return tagInstances.map((tagInstance, j) => {
+          const i = `${index}_${j + 1}`;
+          pushToFormState(formState, tagInstance, i);
+          return genColItemWithOneTag(tagInstance, i, span);
+        });
       }
     }
   });
 
   const rowItems = wrapRowContainer(tagList);
   const formContainer = wrapFormContainer();
-  return formContainer(rowItems.flat().filter((tag) => tag) as string[]);
+  const formStateStr = genFormScript(formState, source);
+  const formTemplate = formContainer(rowItems.flat().filter((tag) => tag) as string[]);
+  return [formTemplate, formStateStr];
 }

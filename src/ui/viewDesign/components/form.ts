@@ -19,8 +19,7 @@ export const form = `
     :label-width="80"
   >
   ${slot}
-</Form>
-`;
+</Form>`; //尾部不能有换行，否则gogocode.replace会报错
 
 const col = function (span: number, formItem: string) {
   return `
@@ -37,17 +36,17 @@ const row = `
   `;
 
 export function wrapViewDesignFormItem(template: string, name: string) {
-  return removeLastIndexEnter(formItem(template, name));
+  return formItem(template, name);
 }
 
 export function wrapViewDesignForm(template: string[]) {
-  return removeLastIndexEnter(form.replace(slot, genMutipleLineTmpl(template)));
+  return form.replace(slot, genMutipleLineTmpl(template));
 }
 
 export function wrapViewDesignRow(col: string) {
-  return removeLastIndexEnter(row.replace(slot, col));
+  return row.replace(slot, col);
 }
 
 export function wrapViewDesignCol(span: number, formItem: string) {
-  return removeLastIndexEnter(col(span, formItem));
+  return col(span, formItem);
 }
