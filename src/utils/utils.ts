@@ -1,5 +1,5 @@
 import { window, EndOfLine, workspace } from "vscode";
-import { genFormStr } from "./genFormStr";
+import { buildForm } from "./genFormStr";
 import $ = require("gogocode");
 import {
   FORM_SELECTOR,
@@ -9,7 +9,6 @@ import {
   VUE3_SETUP_REG,
   ZERO_INDENT_START_TAGS,
 } from "../constant";
-import { Componet, ComponetMap } from "../types/component";
 
 export function genRegisterComponentCurry(map: ComponetMap) {
   return function ({ key, value }: { key: string[]; value: Componet }) {
@@ -56,18 +55,18 @@ function isEmptyNode(node: $.GoGoAST) {
   return !node[0];
 }
 
-function replaceScript(ast: $.GoGoAST, source: string, formScriptStr: string) {
+function replaceScript(ast: $.GoGoAST, source: string, script: string) {
   const scriptAst = getScriptAst(ast, source);
   if (isEmptyNode(scriptAst)) {
     window.showWarningMessage("The script block is empty, please check the code");
     return;
   }
   if (isVue3(source)) {
-    scriptAst.append("program.body", formScriptStr);
+    scriptAst.append("program.body", script);
   } else {
-    const objStr = formScriptStr.slice(1, -1);
-    const dataStr = `data(){return{$$$, ${objStr}}}`;
-    scriptAst.replace("data(){return{$$$}}", dataStr);
+    const reactiveData = script.slice(1, -1);
+    const dataOption = `data(){return{$$$, ${reactiveData}}}`;
+    scriptAst.replace("data(){return{$$$}}", dataOption);
   }
 }
 
@@ -98,7 +97,7 @@ function buildBlocks(lines: string[]) {
   return blocks;
 }
 
-function sortSourceBlock(ast: $.GoGoAST, source: string) {
+function sortSourceBlocks(ast: $.GoGoAST, source: string) {
   const lines = source.split(getEnterStr());
   const blocks = buildBlocks(lines);
   blocks.forEach(({ key, start }) => {
@@ -106,22 +105,30 @@ function sortSourceBlock(ast: $.GoGoAST, source: string) {
   });
 }
 
+function getCustomFormContent(formAst: $.GoGoAST) {
+  // @ts-ignore
+  const formNode = formAst[0];
+  if (!formNode) {
+    window.showWarningMessage("The form selector is not found, please check the template");
+    process.exit();
+  }
+  return formNode.match.$$$$[0].content.value.content;
+}
+
+function replaceTemplate(templateAst: $.GoGoAST, selectorConfigration: string, template: string) {
+  templateAst.replace(selectorConfigration, template);
+}
+
 export function transform(source: string) {
   const ast = $(source, { parseOptions: { language: "vue" } });
   const templateAst = ast.find(TEMPLATE_SELECTOR);
   const selectorConfigration = getConfiguration(FORM_SELECTOR)!;
   const formAst = templateAst.find(selectorConfigration);
-  // @ts-ignore
-  const formNode = formAst[0];
-  if (!formNode) {
-    process.exit();
-  }
-  const formStr = formNode.match.$$$$[0].content.value.content;
-  const [formTemplate, formScriptStr] = genFormStr(formStr, source);
-
-  templateAst.replace(selectorConfigration, formTemplate);
-  replaceScript(ast, source, formScriptStr);
-  sortSourceBlock(ast, source);
+  const customForm = getCustomFormContent(formAst);
+  const [template, script] = buildForm(customForm, source);
+  replaceTemplate(templateAst, selectorConfigration, template);
+  replaceScript(ast, source, script);
+  sortSourceBlocks(ast, source);
 
   return ast.generate();
 }

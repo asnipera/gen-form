@@ -1,7 +1,7 @@
-import { Position, Range, window } from "vscode";
+import { Range, window } from "vscode";
 import { transform } from "./utils/utils";
 
-export function genFormCommand() {
+export function buildFormCommand() {
   const editor = window.activeTextEditor;
   if (!editor) {
     return;

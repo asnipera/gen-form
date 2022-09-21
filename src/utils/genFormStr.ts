@@ -1,8 +1,6 @@
-import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
-import { END_SCRIPT_TAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
+import { FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 import { getComponentTemplates, wrapCol, wrapFormContainer, wrapFormItem, wrapRow } from "../ui";
 import { envProxy } from "./proxy";
-import { Componet, ComponetMap } from "../types/component";
 import { isVue3 } from "./utils";
 
 // 拆分每行的标签
@@ -45,10 +43,6 @@ function getTagTemplate(tagInstance: Componet | undefined, index: string) {
 function wrapFormItemContainer(tmpl: string, index: string) {
   const formItem = wrapFormItem();
   return formItem(tmpl, index);
-}
-
-function isString(value: any): value is string {
-  return typeof value === "string";
 }
 
 function wrapRowContainer(colItems: (string | string[] | undefined)[]) {
@@ -94,7 +88,7 @@ function genFormScript(formState: Record<string, any>, extraFormConstants: strin
   return scriptStr.join("");
 }
 
-export function genFormStr(tagStr: string, source: string) {
+export function buildForm(tagStr: string, source: string) {
   const tags = parseTagStr(tagStr, envProxy.enterFlag);
   const templates = getComponentTemplates();
   const formState = {};
