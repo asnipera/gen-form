@@ -1,4 +1,4 @@
-export const key = ["checkbox", "多选框", "多选", "复选"];
+export const alias = ["checkbox", "多选框", "多选", "复选"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -8,6 +8,6 @@ export const value: Componet = function (index: string) {
   };
 };
 export const checkbox = {
-  key,
+  alias,
   value,
 };

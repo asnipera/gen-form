@@ -1,4 +1,4 @@
-export const key = ["cascader", "级联", "级联选择"];
+export const alias = ["cascader", "级联", "级联选择"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -8,6 +8,6 @@ export const value: Componet = function (index: string) {
   };
 };
 export const cascader = {
-  key,
+  alias,
   value,
 };

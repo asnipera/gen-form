@@ -1,4 +1,4 @@
-export const key = ["datePicker", "date", "日期", "日期选择框"];
+export const alias = ["datePicker", "date", "日期", "日期选择框"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -9,6 +9,6 @@ export const value: Componet = function (index: string) {
 };
 
 export const datePicker = {
-  key,
+  alias,
   value,
 };

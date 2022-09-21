@@ -1,4 +1,4 @@
-export const key = ["select", "下拉", "选择器"];
+export const alias = ["select", "下拉", "选择器"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -13,6 +13,6 @@ export const value: Componet = function (index: string) {
 };
 
 export const select = {
-  key,
+  alias,
   value,
 };

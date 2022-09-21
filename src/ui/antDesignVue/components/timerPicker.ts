@@ -1,4 +1,4 @@
-export const key = ["timerPicker", "timer", "时间选择框", "时间"];
+export const alias = ["timerPicker", "timer", "时间选择框", "时间"];
 
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
@@ -9,6 +9,6 @@ export const value: Componet = function (index: string) {
   };
 };
 export const timerPicker = {
-  key,
+  alias,
   value,
 };

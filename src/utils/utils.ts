@@ -10,12 +10,6 @@ import {
   ZERO_INDENT_START_TAGS,
 } from "../constant";
 
-export function genRegisterComponentCurry(map: ComponetMap) {
-  return function ({ key, value }: { key: string[]; value: Componet }) {
-    map.set(key, value);
-  };
-}
-
 export function getEnterStr(): string {
   const editor = window.activeTextEditor;
   if (!editor) {

@@ -1,4 +1,4 @@
-export const key = ["treeSelect", "tree", "树", "树选择"];
+export const alias = ["treeSelect", "tree", "树", "树选择"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -10,6 +10,6 @@ export const value: Componet = function (index: string) {
 };
 
 export const treeSelect = {
-  key,
+  alias,
   value,
 };

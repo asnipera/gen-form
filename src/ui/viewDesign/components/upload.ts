@@ -1,4 +1,4 @@
-export const key = ["upload", "上传"];
+export const alias = ["upload", "上传"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -17,6 +17,6 @@ export const value: Componet = function (index: string) {
 };
 
 export const upload = {
-  key,
+  alias,
   value,
 };

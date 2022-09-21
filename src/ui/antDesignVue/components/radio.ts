@@ -1,4 +1,4 @@
-export const key = ["radio", "单选框", "单选"];
+export const alias = ["radio", "单选框", "单选"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -13,6 +13,6 @@ export const value: Componet = function (index: string) {
   };
 };
 export const radio = {
-  key,
+  alias,
   value,
 };

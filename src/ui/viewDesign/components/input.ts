@@ -1,4 +1,4 @@
-export const key = ["input", "输入框"];
+export const alias = ["input", "输入框"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -9,6 +9,6 @@ export const value: Componet = function (index: string) {
 };
 
 export const input = {
-  key,
+  alias,
   value,
 };

@@ -1,4 +1,4 @@
-export const key = ["autoComplete ", "complete", "auto", "自动完成", "自动"];
+export const alias = ["autoComplete ", "complete", "auto", "自动完成", "自动"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
@@ -9,6 +9,6 @@ export const value: Componet = function (index: string) {
 };
 
 export const autoComplete = {
-  key,
+  alias,
   value,
 };
