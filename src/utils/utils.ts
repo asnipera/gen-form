@@ -54,8 +54,9 @@ function replaceScript(scriptAst: $.GoGoAST, source: string, script: string) {
     scriptAst.append("program.body", script);
   } else {
     const reactiveData = script.slice(1, -1);
-    const dataOption = `data(){return{$$$, ${reactiveData}}}`;
-    scriptAst.replace("data(){return{$$$}}", dataOption);
+    const dataOption = `return{$$$, ${reactiveData}}`;
+    // fix for `data(){const a = 1; return {a}}`
+    scriptAst.find("data(){}").replace("return{$$$}", dataOption);
   }
 }
 
