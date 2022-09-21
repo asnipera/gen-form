@@ -1,7 +1,15 @@
 import { window, EndOfLine, workspace } from "vscode";
 import { genFormStr } from "./genFormStr";
 import $ = require("gogocode");
-import { FORM_SELECTOR, TEMPLATE_SELECTOR, VUE2_SCRIPT_SELECTOR, VUE3_SCRIPT_SELECTOR, VUE3_SETUP_REG } from "../constant";
+import {
+  FORM_SELECTOR,
+  TEMPLATE_SELECTOR,
+  VUE2_SCRIPT_SELECTOR,
+  VUE3_SCRIPT_SELECTOR,
+  VUE3_SETUP_REG,
+  ZERO_INDENT_START_TAGS,
+} from "../constant";
+import { envProxy } from "./proxy";
 
 export function getEnterStr(): string {
   const editor = window.activeTextEditor;
@@ -37,15 +45,59 @@ function getScriptAst(ast: $.GoGoAST, source: string) {
   return ast.find(selector);
 }
 
-function replaceScript(ast: $.GoGoAST, source: string, formStateStr: string) {
+function isEmptyNode(node: $.GoGoAST) {
+  // @ts-ignore
+  return !node[0];
+}
+
+function replaceScript(ast: $.GoGoAST, source: string, formScriptStr: string) {
   const scriptAst = getScriptAst(ast, source);
+  if (isEmptyNode(scriptAst)) {
+    window.showWarningMessage("The script block is empty, please check the code");
+    return;
+  }
   if (isVue3(source)) {
-    return "";
+    scriptAst.append("program.body", formScriptStr);
   } else {
-    const objStr = formStateStr.slice(1, -1);
+    const objStr = formScriptStr.slice(1, -1);
     const dataStr = `data(){return{$$$, ${objStr}}}`;
     scriptAst.replace("data(){return{$$$}}", dataStr);
   }
+}
+
+//sort blocks by source position
+function buildBlocks(lines: string[]) {
+  const zeroIndentTagRegx = ZERO_INDENT_START_TAGS.map((tag) => new RegExp(`^${tag}.*?>`));
+  const blocks: { key: string; start: string }[] = [];
+  let start = "";
+  lines.forEach((line, index) => {
+    const isZeroIndentTag = zeroIndentTagRegx.some((reg) => reg.test(line));
+    start += line.length + index;
+    if (isZeroIndentTag) {
+      if (line.includes("template")) {
+        blocks.push({
+          key: "template",
+          start,
+        });
+      } else if (line.includes("script")) {
+        const key = line.includes("setup") ? "scriptSetup" : "script";
+        blocks.push({
+          key,
+          start,
+        });
+      }
+    }
+  });
+
+  return blocks;
+}
+
+function sortSourceBlock(ast: $.GoGoAST, source: string) {
+  const lines = source.split(getEnterStr());
+  const blocks = buildBlocks(lines);
+  blocks.forEach(({ key, start }) => {
+    ast.attr(`${key}.start`, start);
+  });
 }
 
 export function transform(source: string) {
@@ -54,10 +106,16 @@ export function transform(source: string) {
   const selectorConfigration = getConfiguration(FORM_SELECTOR)!;
   const formAst = templateAst.find(selectorConfigration);
   // @ts-ignore
-  const formStr = formAst[0].match.$$$$[0].content.value.content;
-  const [formTemplate, formStateStr] = genFormStr(formStr, source);
+  const formNode = formAst[0];
+  if (!formNode) {
+    process.exit();
+  }
+  const formStr = formNode.match.$$$$[0].content.value.content;
+  const [formTemplate, formScriptStr] = genFormStr(formStr, source);
 
   templateAst.replace(selectorConfigration, formTemplate);
-  replaceScript(ast, source, formStateStr);
+  replaceScript(ast, source, formScriptStr);
+  sortSourceBlock(ast, source);
+
   return ast.generate();
 }

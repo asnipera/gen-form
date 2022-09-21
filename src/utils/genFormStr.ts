@@ -82,14 +82,14 @@ function pushToFormState(formState: Record<string, any>, tagInstance: Componet |
 }
 
 function genFormScript(formState: Record<string, any>, source: string) {
+  const formStateStr = JSON.stringify(formState);
   if (!isVue3(source)) {
     return JSON.stringify(formState);
   }
-  let scriptStr = [FORM_STATE.replace(/object/, JSON.stringify(formState))];
+  let scriptStr = [FORM_STATE.replace(/object/, formStateStr)];
   scriptStr.push(envProxy.enterFlag);
   scriptStr.push(RULES);
   scriptStr.push(envProxy.enterFlag);
-  scriptStr.push(END_SCRIPT_TAG);
   return scriptStr.join("");
 }
 
@@ -118,7 +118,7 @@ export function genFormStr(tagStr: string, source: string) {
 
   const rowItems = wrapRowContainer(tagList);
   const formContainer = wrapFormContainer();
-  const formStateStr = genFormScript(formState, source);
+  const formScriptStr = genFormScript(formState, source);
   const formTemplate = formContainer(rowItems.flat().filter((tag) => tag) as string[]);
-  return [formTemplate, formStateStr];
+  return [formTemplate, formScriptStr];
 }

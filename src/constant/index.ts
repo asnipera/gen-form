@@ -10,3 +10,4 @@ export const VUE3_SCRIPT_SELECTOR = "<script setup></script>";
 export const VUE2_SCRIPT_SELECTOR = "<script></script>";
 export const TEMPLATE_SELECTOR = "<template></template>";
 export const FORM_SELECTOR = "platform.Selector";
+export const ZERO_INDENT_START_TAGS = ["<template", "<script", "<style"];
