@@ -77,15 +77,16 @@ function pushToFormState(formState: Record<string, any>, tagInstance: Componet |
 
 function genFormScript(formState: Record<string, any>, extraFormConstants: string[], source: string) {
   const formStateStr = JSON.stringify(formState);
-  if (!isVue3(source)) {
-    return JSON.stringify(formState);
+  if (isVue3(source)) {
+    let scriptStr = [FORM_STATE.replace(/object/, formStateStr)];
+    scriptStr.push(envProxy.enterFlag);
+    scriptStr.push(RULES);
+    scriptStr.push(envProxy.enterFlag);
+    scriptStr.push(...extraFormConstants);
+    return scriptStr.join("");
   }
-  let scriptStr = [FORM_STATE.replace(/object/, formStateStr)];
-  scriptStr.push(envProxy.enterFlag);
-  scriptStr.push(RULES);
-  scriptStr.push(envProxy.enterFlag);
-  scriptStr.push(...extraFormConstants);
-  return scriptStr.join("");
+  // vue2
+  return JSON.stringify({ formState, rules: {} });
 }
 
 export function buildForm(tagStr: string, source: string) {
