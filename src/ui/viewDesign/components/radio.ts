@@ -10,7 +10,6 @@ export const value: Componet = function (index: string) {
       '<Radio label="2"></Radio>',
       "</RadioGroup>",
     ].join(""),
-    script: `const ${model} = ref('');`,
     key: model,
     value: "1",
   };

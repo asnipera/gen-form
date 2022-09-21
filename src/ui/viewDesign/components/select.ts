@@ -9,7 +9,6 @@ export const value: Componet = function (index: string) {
       '<a-select-option value="">option</a-select-option>',
       "</a-select>",
     ].join(""),
-    script: `const modalValue${index} = ref('');`,
     key: model,
     value: "",
   };

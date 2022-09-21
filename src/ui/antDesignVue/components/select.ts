@@ -14,7 +14,6 @@ export const value: Componet = function (index: string) {
 
   return {
     template: genMutipleLineTmpl(template),
-    script: `const modalValue${index} = ref('');`,
     key: model,
     value: "",
   };

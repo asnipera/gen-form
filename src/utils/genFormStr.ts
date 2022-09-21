@@ -76,12 +76,12 @@ function pushToFormState(formState: Record<string, any>, tagInstance: Componet |
   if (!tagInstance) {
     return;
   }
-  const { key, value } = tagInstance(index);
+  const { key, value, extra } = tagInstance(index);
   formState[key] = value;
-  return formState;
+  return extra;
 }
 
-function genFormScript(formState: Record<string, any>, source: string) {
+function genFormScript(formState: Record<string, any>, extraFormConstants: string[], source: string) {
   const formStateStr = JSON.stringify(formState);
   if (!isVue3(source)) {
     return JSON.stringify(formState);
@@ -90,6 +90,7 @@ function genFormScript(formState: Record<string, any>, source: string) {
   scriptStr.push(envProxy.enterFlag);
   scriptStr.push(RULES);
   scriptStr.push(envProxy.enterFlag);
+  scriptStr.push(...extraFormConstants);
   return scriptStr.join("");
 }
 
@@ -97,11 +98,13 @@ export function genFormStr(tagStr: string, source: string) {
   const tags = parseTagStr(tagStr, envProxy.enterFlag);
   const templates = getComponentTemplates();
   const formState = {};
+  const extraFormConstants: string[] = [];
   const tagList = tags.map((tag, i) => {
     const index = (i + 1).toString();
     if (isSingleTag(tag)) {
       const tagInstance = getSigleTagTmpl(templates, tag);
-      pushToFormState(formState, tagInstance, index);
+      const extra = pushToFormState(formState, tagInstance, index);
+      extra && extraFormConstants.push(extra);
       return genColItemWithOneTag(tagInstance, index);
     } else {
       const tagInstances = genMutipleTagTmpl(templates, tag);
@@ -109,7 +112,8 @@ export function genFormStr(tagStr: string, source: string) {
         const span = Math.floor(24 / tagInstances.length);
         return tagInstances.map((tagInstance, j) => {
           const i = `${index}_${j + 1}`;
-          pushToFormState(formState, tagInstance, i);
+          const extra = pushToFormState(formState, tagInstance, i);
+          extra && extraFormConstants.push(extra);
           return genColItemWithOneTag(tagInstance, i, span);
         });
       }
@@ -118,7 +122,7 @@ export function genFormStr(tagStr: string, source: string) {
 
   const rowItems = wrapRowContainer(tagList);
   const formContainer = wrapFormContainer();
-  const formScriptStr = genFormScript(formState, source);
+  const formScriptStr = genFormScript(formState, extraFormConstants, source);
   const formTemplate = formContainer(rowItems.flat().filter((tag) => tag) as string[]);
   return [formTemplate, formScriptStr];
 }

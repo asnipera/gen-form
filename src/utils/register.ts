@@ -1,6 +1,5 @@
 export type Componet = (index: string) => {
   template: string;
-  script: string;
   key: string;
   value: any;
   extra?: string;

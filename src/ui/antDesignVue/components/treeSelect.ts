@@ -3,6 +3,7 @@ import { Componet } from "../../../utils/register";
 export const key = ["treeSelect", "tree", "树", "树选择"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
+  const treeData = `treeData${index}`;
   return {
     template: [
       `
@@ -12,7 +13,7 @@ export const value: Componet = function (index: string) {
         placeholder="Please select"
         allow-clear
         tree-default-expand-all
-        :tree-data="treeData"
+        :tree-data="${treeData}"
       >`,
       `<template #title="{ value, title }">
           {{title}}-{{value}}
@@ -20,13 +21,9 @@ export const value: Componet = function (index: string) {
       </a-tree-select>
     `,
     ].join(""),
-    script: `
-      const ${model} = ref('');
-      const treeData = ref([]);
-      `,
     key: model,
     value: "",
-    extra: "const treeData = ref([]);",
+    extra: `const ${treeData} = ref([]);`,
   };
 };
 

@@ -17,7 +17,6 @@ export const value: Componet = function (index: string) {
         Click to Upload
       </a-button>
     </a-upload>`,
-    script: `const ${model} = ref('');`,
     key: model,
     value: "",
   };

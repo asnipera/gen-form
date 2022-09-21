@@ -6,7 +6,6 @@ export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<a-input-number v-model:value="formState.${model}" />`,
-    script: `const  ${model}  = ref(0);`,
     key: model,
     value: 0,
   };

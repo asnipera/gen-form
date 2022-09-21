@@ -5,10 +5,6 @@ export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: "<to-do />",
-    script: `
-      const ${model} = ref('');
-      const treeData = ref([]);
-      `,
     key: model,
     value: "",
     extra: "const treeData = ref([]);",

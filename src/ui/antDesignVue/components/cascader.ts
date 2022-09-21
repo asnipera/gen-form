@@ -5,7 +5,6 @@ export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<a-cascader v-model:value="formState.${model}" :options="options" placeholder="" />`,
-    script: `const ${model} = ref([]);`,
     key: model,
     value: [],
   };

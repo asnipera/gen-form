@@ -13,7 +13,6 @@ export const value: Componet = function (index: string) {
       >
       <Button icon="ios-cloud-upload-outline">Upload files</Button>
     </Upload>`,
-    script: `const ${model} = ref('');`,
     key: model,
     value: "",
   };

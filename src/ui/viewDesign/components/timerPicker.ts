@@ -6,7 +6,6 @@ export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: `<TimePicker v-model="formState.${model}" format="HH’mm’ss" />`,
-    script: `const ${model} = ref();`,
     key: model,
     value: "",
   };
