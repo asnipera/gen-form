@@ -1,5 +1,3 @@
-import { Componet } from "../../../utils/register";
-
 export const key = ["treeSelect", "tree", "树", "树选择"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;

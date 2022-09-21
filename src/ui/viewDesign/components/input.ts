@@ -1,5 +1,3 @@
-import { Componet } from "../../../utils/register";
-
 export const key = ["input", "输入框"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;

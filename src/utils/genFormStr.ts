@@ -2,7 +2,7 @@ import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vsco
 import { END_SCRIPT_TAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
 import { getComponentTemplates, wrapCol, wrapFormContainer, wrapFormItem, wrapRow } from "../ui";
 import { envProxy } from "./proxy";
-import { Componet, ComponetMap } from "./register";
+import { Componet, ComponetMap } from "../types/component";
 import { isVue3 } from "./utils";
 
 // 拆分每行的标签

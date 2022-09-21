@@ -9,7 +9,13 @@ import {
   VUE3_SETUP_REG,
   ZERO_INDENT_START_TAGS,
 } from "../constant";
-import { envProxy } from "./proxy";
+import { Componet, ComponetMap } from "../types/component";
+
+export function genRegisterComponentCurry(map: ComponetMap) {
+  return function ({ key, value }: { key: string[]; value: Componet }) {
+    map.set(key, value);
+  };
+}
 
 export function getEnterStr(): string {
   const editor = window.activeTextEditor;

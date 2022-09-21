@@ -1,6 +1,6 @@
 import { Selection, Range, TextEditor, window, EndOfLine, workspace } from "vscode";
 import { CLOSE_SCRIPT_REG, END_SCRIPT_TAG, FORM_FLAG, FORM_STATE, INLINE_SPLIT, RULES } from "../constant";
-import { Componet } from "./register";
+import { Componet } from "../types/component";
 import { getComponentTemplates, wrapCol, wrapFormContainer, wrapFormItem, wrapRow } from "../ui";
 
 function getEnterStr(): string {

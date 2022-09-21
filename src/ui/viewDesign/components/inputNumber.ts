@@ -1,5 +1,3 @@
-import { Componet } from "../../../utils/register";
-
 export const key = ["inputNumber", "数字", "数字输入框"];
 
 export const value: Componet = function (index: string) {

@@ -1,5 +1,3 @@
-import { envProxy } from "../../../utils/proxy";
-import { Componet } from "../../../utils/register";
 import { genMutipleLineTmpl } from "../../../utils/utils";
 
 export const key = ["select", "下拉", "选择器"];

@@ -1,5 +1,3 @@
-import { Componet } from "../../../utils/register";
-
 export const key = ["cascader", "级联", "级联选择"];
 export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;

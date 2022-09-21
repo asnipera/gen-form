@@ -1,4 +1,4 @@
-import { genMutipleLineTmpl, removeLastIndexEnter } from "../../../utils/utils";
+import { genMutipleLineTmpl } from "../../../utils/utils";
 
 export const slot = `<slot />`;
 

@@ -1,5 +1,3 @@
-import { Componet } from "../../../utils/register";
-
 export const key = ["timerPicker", "timer", "时间选择框", "时间"];
 
 export const value: Componet = function (index: string) {
