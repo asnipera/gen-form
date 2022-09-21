@@ -17,8 +17,8 @@ Lazy Form <em> ⚡️</em>
 
 - ⚡️ 一键生成form表单
 - 🚀 快捷键和右键菜单
-- 📚 支持ant-design-vue
-- 📚 view design (waitting)
+- 📚 支持Ant Design Vue
+- 📚 支持View Design
 
 ## 快捷键
 
@@ -30,52 +30,54 @@ Lazy Form <em> ⚡️</em>
 
 
 ## 使用方式
-### 在模板中输入组件对应的中英文标签
+### 1. 在模板中添加form选择器，可在设置模板自定义form选择器
+```js
+<template>
+    <div id="f">
 
-1. 通过右键菜单生成表单
+    </div>
+</template>
+```
+### 2. 在模板中输入组件对应的中英文标签
+
+- 通过右键菜单生成表单
 ```js
 <template>
     // 英文标签
-    input
-    select
+    <div id="f">
+        input
+        select
+    </div>
+   
 </template>
 ```
 ```js
 <template>
     // 中英文标签
-    input
-    单选
-    多选
+    <div id="f">
+        input
+        单选
+        多选
+    </div>
+    
 </template>
 ```
 <p>
 <img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/contextMenu.gif?raw=true">
 </p>
 
-2. 通过快捷键（`ctrl+alt+p`）生成表单
-```js
-<template>
-    // 通过快捷键生成表单时，必须在始末位置添加````标记
-    ````
-    input
-    单选
-    多选
-    ````
-</template>
-```
+- 通过快捷键（`ctrl+alt+p`）生成表单
 
-<p>
-<img alt="Demo" src="https://github.com/asnipera/gen-form/blob/main/src/assets/shortcut.gif?raw=true">
 </p>
 
-3. 一行多列
+- 一行多列
 ```js
 <template>
     // 行内组件通过|隔开（一行两列）
-    ````
+     <div id="f">
         input|radio
         datePicker | 多选框
-    `````
+    </div>
 </template>
 ```
 

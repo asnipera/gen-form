@@ -46,12 +46,12 @@
           "default": "Ant Design Vue",
           "enum": [
             "Ant Design Vue",
-            "View Design (waitting)"
+            "View Design"
           ],
           "description": "Generate a form with one click",
           "enumDescriptions": [
             "generate ant design vue form",
-            "generate view design form (waitting)"
+            "generate view design form"
           ]
         },
         "platform.Selector": {
@@ -83,7 +83,7 @@
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "@vscode/test-electron": "^2.1.5",
-    "esbuild": "^0.15.7",
+    "esbuild": "^0.15.8",
     "eslint": "^8.20.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
