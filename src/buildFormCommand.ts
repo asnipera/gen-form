@@ -6,6 +6,7 @@ export function buildFormCommand() {
   if (!editor) {
     return;
   }
+  debugger;
   const document = editor.document;
   const text = document.getText();
   const sfc = transform(text);
