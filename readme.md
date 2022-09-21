@@ -99,3 +99,26 @@ Lazy Form <em> ⚡️</em>
 | timerPicker  | timerPicker, timer |时间选择框, 时间 |
 | treeSelect  | treeSelect, tree |树, 树选择 |
 | upload  | upload | 上传 |
+
+
+# Dev
+
+## install
+```js
+npm install
+```
+
+## debugger
+```js
+F5
+```
+
+## build
+```js
+vsce package
+```
+
+## publish
+```js
+vsce publish
+```
