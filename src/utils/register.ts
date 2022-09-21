@@ -1,6 +1,6 @@
 export type Component = (index: string) => {
   template: string;
-  script: string;
+  script?: string;
   key: string;
   value: any;
   extra?: string;
