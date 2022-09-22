@@ -3,9 +3,9 @@ export const value: Componet = function (index: string) {
   const model = `modalValue${index}`;
   return {
     template: [
-      `<a-select v-model:value="formState.${model}" placeholder="">`,
-      '<a-select-option value="">option</a-select-option>',
-      "</a-select>",
+      `<Select v-model:value="formState.${model}" placeholder="">`,
+      '<Option value="">option</Option>',
+      "</Select>",
     ].join(""),
     key: model,
     value: "",
