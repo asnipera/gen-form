@@ -2,9 +2,9 @@ import { genMutipleLineTmpl } from "../../../utils/utils";
 
 export const slot = `<slot />`;
 
-function formItem(slot: string, name: string) {
+function formItem(slot: string, index: string) {
   return `
-  <FormItem label="${name}">
+  <FormItem label="字段${index}" prop="modalValue${index}">
       ${slot}
   </FormItem >
 `;

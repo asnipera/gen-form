@@ -2,9 +2,9 @@ import { genMutipleLineTmpl, removeLastIndexEnter } from "../../../utils/utils";
 
 export const slot = `<slot />`;
 
-function formItem(slot: string, name: string) {
+function formItem(slot: string, index: string) {
   return `
-  <a-form-item has-feedback label="" name="modalValue${name}">
+  <a-form-item has-feedback label="字段${index}" name="modalValue${index}">
       ${slot}
   </a-form-item>
   `;
