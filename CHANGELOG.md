@@ -1,5 +1,8 @@
 # Release Notes for Lazy Form Visual Studio Code Extension
 
+## v1.1.9
+1. fix bug: fix form validation
+
 ## v1.1.8
 1. fix bug: fix Select template by View Design
 
